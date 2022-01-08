@@ -57,7 +57,16 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertIn(tableName, self.table.name)
         #self.assertIn('todoTable', self.table_local.name)
         print ('End: test_table_exists')
-        
+
+    def test_get_table(self):
+        print ('---------------------')
+        print ('Start: test_get_table')
+        # Testing file functions
+        from src.todoList import get_table
+        table = get_table()
+        print ('Table name:' + str(table.name))
+        self.assertEqual("todoUnitTestsTable", table.name)
+        print ('End: test_get_table')
 
     def test_put_todo(self):
         print ('---------------------')
