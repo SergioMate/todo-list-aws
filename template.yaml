@@ -92,6 +92,19 @@ Resources:
           Properties:
             Path: /todos/{id}
             Method: delete
+  TranslateTodoFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: src/
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/LabRole"
+      Handler: translate.translate
+      Runtime: python3.7
+      Events:
+        Create:
+          Type: Api
+          Properties:
+            Path: /todos/{id}/{language}
+            Method: translate
             
   TodosDynamoDbTable:
     Type: AWS::DynamoDB::Table
@@ -99,6 +112,8 @@ Resources:
       TableName: !Sub "${Stage}-TodosDynamoDbTable"
       AttributeDefinitions: 
         - AttributeName: id
+          AttributeType: S
+        - AttributeName: language
           AttributeType: S
       KeySchema: 
         - AttributeName: id
