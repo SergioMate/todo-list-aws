@@ -139,6 +139,10 @@ def create_todo_table(dynamodb):
             {
                 'AttributeName': 'id',
                 'KeyType': 'HASH'
+            },
+            {
+                'AttributeName': 'language',
+                'KeyType': 'RANGE'
             }
         ],
         AttributeDefinitions=[
