@@ -115,10 +115,12 @@ def delete_item(key, dynamodb=None):
     else:
         return
 
+
 def translate_item(text, language, dynamodb=None):
     translate = boto3.client(service_name='translate', region_name='us-east-1')
     try:
-        result = translate.translate_text(Text=text, SourceLanguageCode="auto", TargetLanguageCode=language)
+        result = translate.translate_text(
+        Text=text, SourceLanguageCode="auto", TargetLanguageCode=language)
     except Exception as e:  # pragma: no cover
         print(e.response['Error']['Message'])
     else:
