@@ -31,7 +31,6 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.uuid = "123e4567-e89b-12d3-a456-426614174000"
         self.text = "Aprender DevOps y Cloud en la UNIR"
 
-        from src.todoList import create_todo_table
         self.table = create_todo_table(self.dynamodb)
         #self.table_local = create_todo_table()
         print ('End: setUp')
@@ -214,6 +213,85 @@ class TestDatabaseFunctions(unittest.TestCase):
         self.assertRaises(TypeError, delete_item("", self.dynamodb))
         print ('End: test_delete_todo_error')
 
+    def test_translate_todo(self):
+        print ('---------------------')
+        print ('Start: test_translate_todo')
+        self.table = create_todo_table_language(self.dynamodb)
+        from src.todoList import translate_item
+        # Testing file functions
+        # Table mock
+        translation = translate_item(self.text, "en", self.dynamodb)
+        print ('Response translate en:' + str(translation))
+        self.assertEqual("Learn DevOps and Cloud at UNIR", translation)
+        translation = translate_item(self.text, "fr", self.dynamodb)
+        print ('Response translate fr:' + str(translation))
+        self.assertEqual("Apprenez DevOps et Cloud à l'UNIR", translation)
+        "Apprenez DevOps et Cloud à l'UNIR"
+        print ('End: test_delete_todo')
+
+
+def create_todo_table(dynamodb):
+    # For unit testing
+    tableName = os.environ['DYNAMODB_TABLE']
+    print('Creating Table with name:' + tableName)
+    table = dynamodb.create_table(
+        TableName=tableName,
+        KeySchema=[
+            {
+                'AttributeName': 'id',
+                'KeyType': 'HASH'
+            }
+        ],
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'id',
+                'AttributeType': 'S'
+            }
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 1,
+            'WriteCapacityUnits': 1
+        }
+    )
+
+    # Wait until the table exists.
+    table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
+    if (table.table_status != 'ACTIVE'):
+        raise AssertionError()
+
+    return table
+
+
+def create_todo_table_language(dynamodb):
+    # For unit testing
+    tableName = os.environ['DYNAMODB_TABLE'] + "_language"
+    print('Creating Table with name:' + tableName)
+    table = dynamodb.create_table(
+        TableName=tableName,
+        KeySchema=[
+            {
+                'AttributeName': 'id',
+                'KeyType': 'HASH'
+            }
+        ],
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'id',
+                'AttributeType': 'S'
+            }
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 1,
+            'WriteCapacityUnits': 1
+        }
+    )
+
+    # Wait until the table exists.
+    table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
+    if (table.table_status != 'ACTIVE'):
+        raise AssertionError()
+
+    return table
 
 
 if __name__ == '__main__':
