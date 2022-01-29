@@ -113,8 +113,6 @@ Resources:
       AttributeDefinitions: 
         - AttributeName: id
           AttributeType: S
-        - AttributeName: language
-          AttributeType: S
       KeySchema: 
         - AttributeName: id
           KeyType: HASH
