@@ -216,6 +216,7 @@ class TestDatabaseFunctions(unittest.TestCase):
     def test_translate_todo(self):
         print ('---------------------')
         print ('Start: test_translate_todo')
+        self.table = create_todo_table_language(self.dynamodb)
         from src.todoList import translate_item
         # Testing file functions
         # Table mock
@@ -239,21 +240,45 @@ def create_todo_table(dynamodb):
             {
                 'AttributeName': 'id',
                 'KeyType': 'HASH'
-            }''',
-            {
-                'AttributeName': 'language',
-                'KeyType': 'RANGE'
-            }'''
+            }
         ],
         AttributeDefinitions=[
             {
                 'AttributeName': 'id',
                 'AttributeType': 'S'
-            }''',
+            }
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 1,
+            'WriteCapacityUnits': 1
+        }
+    )
+
+    # Wait until the table exists.
+    table.meta.client.get_waiter('table_exists').wait(TableName=tableName)
+    if (table.table_status != 'ACTIVE'):
+        raise AssertionError()
+
+    return table
+
+
+def create_todo_table_language(dynamodb):
+    # For unit testing
+    tableName = os.environ['DYNAMODB_TABLE'] + "_language"
+    print('Creating Table with name:' + tableName)
+    table = dynamodb.create_table(
+        TableName=tableName,
+        KeySchema=[
             {
-                'AttributeName': 'language',
+                'AttributeName': 'id',
+                'KeyType': 'HASH'
+            }
+        ],
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'id',
                 'AttributeType': 'S'
-            }'''
+            }
         ],
         ProvisionedThroughput={
             'ReadCapacityUnits': 1,
