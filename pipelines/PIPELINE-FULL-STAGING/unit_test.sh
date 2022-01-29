@@ -4,7 +4,7 @@ source todo-list-aws/bin/activate
 set -x
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 echo "PYTHONPATH: $PYTHONPATH"
-export DYNAMODB_TABLE=local-TodosDynamoDbTable
+export DYNAMODB_TABLE=todoUnitTestsTable
 export ENDPOINT_OVERRIDE=http://dynamodb:8000
 python test/unit/TestToDo.py
 pip show coverage
