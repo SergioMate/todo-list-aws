@@ -6,6 +6,7 @@ from moto import mock_dynamodb2
 import sys
 import os
 import json
+import functools
 
 @mock_dynamodb2
 class TestDatabaseFunctions(unittest.TestCase):
@@ -43,6 +44,8 @@ class TestDatabaseFunctions(unittest.TestCase):
         print ('Table deleted succesfully')
         #self.table_local.delete()
         self.dynamodb = None
+        boto3.client = functools.partial(boto3.client, endpoint_url=None)
+        boto3.resource = functools.partial(boto3.resource, endpoint_url=None)
         print ('End: tearDown')
 
     def test_table_exists(self):
