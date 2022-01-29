@@ -109,7 +109,7 @@ Resources:
   TodosDynamoDbTable:
     Type: AWS::DynamoDB::Table
     Properties: 
-      TableName: !Sub "${Stage}-TodosDynamoDbTable"
+      TableName: !Sub "${Stage}-TodosDynamoDbTable_post"
       AttributeDefinitions: 
         - AttributeName: id
           AttributeType: S
