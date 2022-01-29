@@ -23,7 +23,7 @@ Globals:
     Environment:
       Variables:
         DYNAMODB_TABLE: !Ref TodosDynamoDbTable
-        ENDPOINT_OVERRIDE: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+        ENDPOINT_OVERRIDE: ""
     
 Resources:
   
