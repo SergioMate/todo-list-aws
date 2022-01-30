@@ -224,8 +224,9 @@ class TestApi(unittest.TestCase):
         response = requests.get(url + '/' + ID_TODO + '/fr')
         self.assertEqual(
             response.status_code, 200, "Error en la petición API a {url}"
+        )
         self.assertEqual(
             response.json()['body'], "Exemple de texte d'intégration", "Error en la petición API a {url}"
         )
-        print('End - integration test Delete TODO')
+        print('End - integration test Translate TODO')
     
